@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "97D18FEB088E615F225EF80053DBA5AB4581AFE4",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "97D18FEB088E615F225EF80053DBA5AB4581AFE4" : 9223372036854775807,
+    "C65A1923B986D7FDCE6DA7442D552B390D3BF1D8" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "62BD86D5-DD9C-4986-8183-53AB862D3313",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "97D18FEB088E615F225EF80053DBA5AB4581AFE4" : "m117\/",
+    "C65A1923B986D7FDCE6DA7442D552B390D3BF1D8" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CS_M117",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CS_M117\/CS_M117.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rstenberg\/m117.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "97D18FEB088E615F225EF80053DBA5AB4581AFE4"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/rstenberg\/m117.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C65A1923B986D7FDCE6DA7442D552B390D3BF1D8"
+    }
+  ]
+}

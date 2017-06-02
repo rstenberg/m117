@@ -134,6 +134,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if defined(__has_feature) && __has_feature(modules)
 @import UIKit;
 @import CoreGraphics;
+@import Foundation;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -156,13 +157,17 @@ SWIFT_CLASS("_TtC7CS_M11711AppDelegate")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class InitialViewController;
 @class UIButton;
 @class UIView;
-@class NSBundle;
+@class NoteButton;
+@class UILabel;
 @class NSCoder;
+@class NSBundle;
 
 SWIFT_CLASS("_TtC7CS_M11718GameViewController")
 @interface GameViewController : UIViewController
+@property (nonatomic, strong) InitialViewController * _Nullable initialViewController;
 @property (nonatomic, readonly, strong) UIButton * _Nonnull closeButton;
 @property (nonatomic, readonly) CGFloat noteDimension;
 @property (nonatomic, readonly, strong) UIView * _Nonnull noteTrackBackground;
@@ -170,20 +175,25 @@ SWIFT_CLASS("_TtC7CS_M11718GameViewController")
 @property (nonatomic, readonly, strong) UIView * _Nonnull noteTrack1;
 @property (nonatomic, readonly, strong) UIView * _Nonnull noteTrack2;
 @property (nonatomic, readonly, strong) UIView * _Nonnull noteTrack3;
-@property (nonatomic, readonly, strong) UIButton * _Nonnull noteCircle0;
-@property (nonatomic, readonly, strong) UIButton * _Nonnull noteCircle1;
-@property (nonatomic, readonly, strong) UIButton * _Nonnull noteCircle2;
-@property (nonatomic, readonly, strong) UIButton * _Nonnull noteCircle3;
-@property (nonatomic, readonly, strong) UIView * _Nonnull note;
+@property (nonatomic, readonly, strong) NoteButton * _Nonnull noteCircle0;
+@property (nonatomic, readonly, strong) NoteButton * _Nonnull noteCircle1;
+@property (nonatomic, readonly, strong) NoteButton * _Nonnull noteCircle2;
+@property (nonatomic, readonly, strong) NoteButton * _Nonnull noteCircle3;
+@property (nonatomic, copy) NSArray<UIView *> * _Nonnull onScreenNotes;
+@property (nonatomic, readonly) NSInteger noteCount;
+@property (nonatomic) NSInteger points;
+@property (nonatomic, readonly, strong) UILabel * _Nonnull pointsLabel;
+- (nonnull instancetype)initWithInitialViewController:(InitialViewController * _Nonnull)initialViewController OBJC_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 - (void)viewDidLoad;
 - (void)viewDidAppear:(BOOL)animated;
+- (void)fireNoteStream;
 - (void)setupNoteTracks;
 - (void)setupNoteButtons;
 - (void)close;
-- (void)attemptNoteHitWithButton:(UIButton * _Nonnull)button;
+- (void)attemptNoteHitWithNoteButton:(NoteButton * _Nonnull)noteButton;
 - (void)didReceiveMemoryWarning;
-- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
-- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil SWIFT_UNAVAILABLE;
 @end
 
 
@@ -197,10 +207,20 @@ SWIFT_CLASS("_TtC7CS_M11731InitialNavigationViewController")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 @end
 
+@class NSInputStream;
+@class NSOutputStream;
 
 SWIFT_CLASS("_TtC7CS_M11721InitialViewController")
-@interface InitialViewController : UIViewController
+@interface InitialViewController : UIViewController <NSStreamDelegate>
+@property (nonatomic, strong) NSInputStream * _Nullable inputStream;
+@property (nonatomic, strong) NSOutputStream * _Nullable outputStream;
+@property (nonatomic, readonly, copy) NSString * _Nonnull addr;
+@property (nonatomic, readonly) NSInteger port;
+@property (nonatomic, readonly, strong) UIButton * _Nonnull startButton;
 - (void)viewDidLoad;
+- (void)initNetworkCommunication SWIFT_METHOD_FAMILY(none);
+- (void)startGame;
+- (void)sendMessageWithMessage:(NSString * _Nonnull)message;
 - (void)didReceiveMemoryWarning;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;

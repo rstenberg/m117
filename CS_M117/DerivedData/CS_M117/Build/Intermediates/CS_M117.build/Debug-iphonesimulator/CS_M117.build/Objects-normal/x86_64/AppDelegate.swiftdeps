@@ -322,6 +322,7 @@ depends-member:
 - !private ["PSo14NSSecureCoding", "userInfo"]
 - !private ["CSo8NSString", "init"]
 - !private ["Vs12StaticString", "init"]
+- !private ["PSo14StreamDelegate", "init"]
 - !private ["SS", "init"]
 - !private ["Ps16TextOutputStream", "init"]
 - !private ["Ps20TextOutputStreamable", "init"]
@@ -485,6 +486,7 @@ depends-nominal:
 - !private "PSo14NSSecureCoding"
 - !private "CSo8NSString"
 - !private "Vs12StaticString"
+- !private "PSo14StreamDelegate"
 - !private "SS"
 - !private "Ps16TextOutputStream"
 - !private "Ps20TextOutputStreamable"

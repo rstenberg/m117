@@ -1,0 +1,9 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "111f9ed43f759d97f1736029f55feb55"
+build_time: [549749678, 286787000]
+inputs:
+  "/Users/ryanstenberg/Desktop/School/CS M117/m117/CS_M117/CS_M117/GameViewController.swift": [549749572, 0]
+  "/Users/ryanstenberg/Desktop/School/CS M117/m117/CS_M117/CS_M117/GlobalVariables.swift": [548813262, 0]
+  "/Users/ryanstenberg/Desktop/School/CS M117/m117/CS_M117/CS_M117/InitialNavigationViewController.swift": [548813321, 0]
+  "/Users/ryanstenberg/Desktop/School/CS M117/m117/CS_M117/CS_M117/InitialViewController.swift": [549749661, 0]
+  "/Users/ryanstenberg/Desktop/School/CS M117/m117/CS_M117/CS_M117/AppDelegate.swift": [548813175, 0]

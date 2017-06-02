@@ -8,7 +8,13 @@
 
 import UIKit
 
-class InitialViewController: UIViewController {
+class InitialViewController: UIViewController, StreamDelegate {
+    
+    var inputStream: InputStream?
+    var outputStream: OutputStream?
+    
+    let addr = "192.168.0.17"
+    let port = 7001
     
     let startButton = UIButton()
     
@@ -26,14 +32,33 @@ class InitialViewController: UIViewController {
         self.view.addSubview(startButton)
     }
     
-    func startGame()    {
-        let gameViewController = GameViewController(nibName: "GameViewController", bundle: nil)
+    // Establish in/out stream with RPi
+    func initNetworkCommunication() {
+        Stream.getStreamsToHost(withName: addr, port: port, inputStream: &inputStream, outputStream: &outputStream)
+        
+        inputStream?.delegate = self
+        outputStream?.delegate = self
+        
+        inputStream?.schedule(in: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
+        outputStream?.schedule(in: RunLoop.current, forMode: RunLoopMode.defaultRunLoopMode)
+
+        inputStream?.open()
+        outputStream?.open()
+    }
+    
+    func startGame() {
+        initNetworkCommunication()
+        let gameViewController = GameViewController(initialViewController: self)
         self.present(gameViewController, animated: true, completion: nil)
+    }
+    
+    func sendMessage(message: String)   {
+        let data = message.data(using: String.Encoding.utf8)!
+        let _ = data.withUnsafeBytes { outputStream?.write($0, maxLength: data.count) }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 }

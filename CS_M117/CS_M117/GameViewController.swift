@@ -10,37 +10,47 @@ import UIKit
 
 class GameViewController: UIViewController {
     
+    var initialViewController: InitialViewController?
+    
     let closeButton = UIButton()
     
-    let noteDimension = CGFloat(30)
+    let noteDimension = CGFloat(45)
     let noteTrackBackground = UIView()
     let noteTrack0 = UIView()
     let noteTrack1 = UIView()
     let noteTrack2 = UIView()
     let noteTrack3 = UIView()
-    let noteCircle0 = UIButton()
-    let noteCircle1 = UIButton()
-    let noteCircle2 = UIButton()
-    let noteCircle3 = UIButton()
+    let noteCircle0 = NoteButton(index: 0)
+    let noteCircle1 = NoteButton(index: 1)
+    let noteCircle2 = NoteButton(index: 2)
+    let noteCircle3 = NoteButton(index: 3)
     
-    let note = UIView()
+    var onScreenNotes: [UIView] = []
+    let noteCount = 4
     
-    // TODO: Create a note queue for each of the 4 tracks
-    //       Have the queue delete items as they leave the screen
-    //       Add new items to the queue in some random order
-    //       Always check if noteButton's frame contains the bottom note in the queue
+    var points = 0
+    let pointsLabel = UILabel()
+    
+    init(initialViewController: InitialViewController) {
+        self.initialViewController = initialViewController
+        super.init(nibName: "GameViewController", bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(red: 51.0 / 255.0, green: 153.0 / 255.0, blue: 1, alpha: 1)
         
-        // Setup closeButton
-        closeButton.frame = CGRect(x: screenWidth - 46, y: 16, width: 30, height: 30)
-        closeButton.setTitle("X", for: .normal)
-        closeButton.setTitleColor(.white, for: .normal)
-        closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
-        self.view.addSubview(closeButton)
+        // Setup pointsLabel
+        pointsLabel.frame = CGRect(x: 20, y: screenHeight * 2 / 3, width: 100, height: 50)
+        pointsLabel.textColor = .white
+        pointsLabel.text = String(points)
+        pointsLabel.font = UIFont.systemFont(ofSize: 40, weight: UIFontWeightRegular)
+        self.view.addSubview(pointsLabel)
         
         // Setup noteTrackBackground
         noteTrackBackground.frame = CGRect(x: (screenWidth / 2) - (noteDimension * 4), y: 0, width: noteDimension * 8, height: screenHeight)
@@ -52,18 +62,79 @@ class GameViewController: UIViewController {
         
         // Setup noteCircles
         setupNoteButtons()
+        
+        // Setup closeButton
+        closeButton.frame = CGRect(x: screenWidth - 46, y: 16, width: 30, height: 30)
+        closeButton.setTitle("X", for: .normal)
+        closeButton.setTitleColor(.white, for: .normal)
+        closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+        self.view.addSubview(closeButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Setup notes
-        note.frame = CGRect(x: 0, y: 0, width: noteDimension, height: noteDimension)
-        note.backgroundColor = .red
-        note.layer.cornerRadius = noteDimension / 2
-        noteTrack0.addSubview(note)
-        noteTrack0.bringSubview(toFront: noteCircle0)
-        UIView.animate(withDuration: 5.0, delay: 0.25, animations: {self.note.frame.origin.y = screenHeight})
+        // Generate Notes
+        for i in 0 ..< noteCount {
+            let note = UIView()
+            note.frame = CGRect(x: 0, y: 0, width: self.noteDimension, height: self.noteDimension)
+            switch i {
+            case 0:
+                note.backgroundColor = .red
+            case 1:
+                note.backgroundColor = .blue
+            case 2:
+                note.backgroundColor = .green
+            case 3:
+                note.backgroundColor = .purple
+            default:
+                note.backgroundColor = .orange
+            }
+            note.layer.cornerRadius = self.noteDimension / 2
+            self.onScreenNotes.append(note)
+        }
+        
+        fireNoteStream()
+        initialViewController?.sendMessage(message: ".")
+    }
+    
+    func fireNoteStream() {
+        
+        for trackNum in 0 ..< 4 {
+            // Send next note down screen
+            switch trackNum {
+            case 0:
+                self.noteTrack0.addSubview(onScreenNotes[0])
+                self.noteTrack0.bringSubview(toFront: self.noteCircle0)
+                UIView.animate(withDuration: 3.0, delay: 0, options: [.curveLinear, .repeat], animations: {self.onScreenNotes[0].frame.origin.y = screenHeight}, completion: {
+                    (finshed: Bool) in
+                    self.onScreenNotes[0].frame.origin.y = 0 - self.noteDimension
+                })
+            case 1:
+                self.noteTrack1.addSubview(onScreenNotes[1])
+                self.noteTrack1.bringSubview(toFront: self.noteCircle1)
+                UIView.animate(withDuration: 2.6, delay: 0.8, options: [.curveLinear, .repeat], animations: {self.onScreenNotes[1].frame.origin.y = screenHeight}, completion: {
+                    (finshed: Bool) in
+                    self.onScreenNotes[1].frame.origin.y = 0 - self.noteDimension
+                })
+            case 2:
+                self.noteTrack2.addSubview(onScreenNotes[2])
+                self.noteTrack2.bringSubview(toFront: self.noteCircle2)
+                UIView.animate(withDuration: 2.3, delay: 1.0, options: [.curveLinear, .repeat], animations: {self.onScreenNotes[2].frame.origin.y = screenHeight}, completion: {
+                    (finshed: Bool) in
+                    self.onScreenNotes[2].frame.origin.y = 0 - self.noteDimension
+                })
+            case 3:
+                self.noteTrack3.addSubview(onScreenNotes[3])
+                self.noteTrack3.bringSubview(toFront: self.noteCircle3)
+                UIView.animate(withDuration: 2.0, delay: 1.8, options: [.curveLinear, .repeat], animations: {self.onScreenNotes[3].frame.origin.y = screenHeight}, completion: {
+                    (finshed: Bool) in
+                    self.onScreenNotes[3].frame.origin.y = 0 - self.noteDimension
+                })
+            default:
+                print("Uh-oh")
+            }
+        }
     }
     
     func setupNoteTracks() {
@@ -132,14 +203,18 @@ class GameViewController: UIViewController {
     }
     
     func close()    {
+        initialViewController?.sendMessage(message: "~")
         self.dismiss(animated: true, completion: nil)
     }
     
-    func attemptNoteHit(button: UIButton)   {
-        if let notePresentationLayer = note.layer.presentation() {
+    func attemptNoteHit(noteButton: NoteButton)   {
+        if let notePresentationLayer = onScreenNotes[noteButton.index].layer.presentation() {
             let noteCenter = CGPoint(x: (noteDimension / 2), y: notePresentationLayer.frame.origin.y + (noteDimension / 2))
-            if button.frame.contains(noteCenter) {
+            if noteButton.frame.contains(noteCenter) {
                 print("Got HEEEEEM")
+                initialViewController?.sendMessage(message: "n")
+                points += 1
+                pointsLabel.text = String(points)
             }
         }   else    {
             print("Error: could not get presentation layer")
@@ -149,5 +224,19 @@ class GameViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    class NoteButton: UIButton {
+        let index: Int
+        
+        init(index: Int) {
+            self.index = index
+            super.init(frame: .zero)
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            self.index = -1
+            super.init(coder: aDecoder)
+        }
     }
 }
